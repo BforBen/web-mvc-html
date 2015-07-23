@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/GuildfordBC/web-mvc-html/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/GuildfordBC/web-mvc-html</projectUrl>
+    <iconUrl>http://cdn.guildford.gov.uk/assets/favicon-32x32.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright Guildford Borough Council 2015</copyright>
+    <language>en-GB</language>
+    <dependencies>
+       <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Web" targetFramework="net45" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
