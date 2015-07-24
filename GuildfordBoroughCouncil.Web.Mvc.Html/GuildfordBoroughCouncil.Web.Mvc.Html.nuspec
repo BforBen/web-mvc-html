@@ -15,6 +15,7 @@
     <copyright>Copyright Guildford Borough Council 2015</copyright>
     <language>en-GB</language>
     <dependencies>
+       <dependency id="GuildfordBoroughCouncil.Linq" version="1.2.5" />
        <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
     </dependencies>
     <frameworkAssemblies>
