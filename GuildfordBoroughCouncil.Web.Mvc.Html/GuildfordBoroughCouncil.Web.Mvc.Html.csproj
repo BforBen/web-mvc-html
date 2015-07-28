@@ -68,6 +68,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DescriptionExtensions.cs" />
     <Compile Include="DisplayExtensions.cs" />
     <Compile Include="EditorExtensions.cs" />
     <Compile Include="HelpExtensions.cs" />
