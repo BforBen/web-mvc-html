@@ -16,17 +16,20 @@ namespace GuildfordBoroughCouncil.Web.Mvc.Html
             return description;
         }
 
-        public static MvcHtmlString DescriptionFor<TModel, TValue>(this HtmlHelper<TModel> self, Expression<Func<TModel, TValue>> expression, object htmlAttributes = null)
+        public static MvcHtmlString DescriptionFor<TModel, TValue>(this HtmlHelper<TModel> self, Expression<Func<TModel, TValue>> expression, string descriptionText = null, object htmlAttributes = null)
         {
-            var metadata = ModelMetadata.FromLambdaExpression(expression, self.ViewData);
-            var description = metadata.Description;
+            if (String.IsNullOrWhiteSpace(descriptionText))
+            {
+                var metadata = ModelMetadata.FromLambdaExpression(expression, self.ViewData);
+                descriptionText = metadata.Description;
+            }
 
-            if (!String.IsNullOrWhiteSpace(description))
+            if (!String.IsNullOrWhiteSpace(descriptionText))
             {
 
                 var span = new TagBuilder("span");
 
-                span.SetInnerText(description);
+                span.SetInnerText(descriptionText);
 
                 var attributes = new RouteValueDictionary(htmlAttributes);
                 span.Attributes.Add(new KeyValuePair<string, string>("class", "help-block help-info"));
