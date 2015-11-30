@@ -138,6 +138,75 @@ namespace GuildfordBoroughCouncil.Web.Mvc.Html
             return MvcHtmlString.Create(sb.ToString());
         }
 
+        public static MvcHtmlString EnumRadioButtonListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression, string firstLabel = "", string lastLabel = "", object htmlAttributes = null)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException("expression");
+            }
+
+            ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            if (metadata == null)
+            {
+                throw new ArgumentException("expression", "No metadata for " + expression.ToString());
+            }
+
+            if (metadata.ModelType == null)
+            {
+                throw new ArgumentException("expression", "No model type for " + expression.ToString());
+            }
+
+            if (!System.Web.Mvc.Html.EnumHelper.IsValidForEnumHelper(metadata.ModelType))
+            {
+                string formatString;
+                if (System.Web.Mvc.Html.EnumHelper.HasFlags(metadata.ModelType))
+                {
+                    formatString = "Return type '{0}' is not supported. Type must not have a '{1}' attribute.";
+                }
+                else
+                {
+                    formatString = "Return type '{0}' is not supported.";
+                }
+
+                throw new ArgumentException("expression", string.Format(formatString, metadata.ModelType.FullName, "Flags" ));
+            }
+
+            // Run through same processing as SelectInternal() to determine selected value and ensure it is included
+            // in the select list.
+            string expressionName = System.Web.Mvc.ExpressionHelper.GetExpressionText(expression);
+            string expressionFullName = htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionName);
+            Enum currentValue = null;
+            if (!String.IsNullOrEmpty(expressionFullName))
+            {
+                currentValue = htmlHelper.GetModelStateValue(expressionFullName, metadata.ModelType) as Enum;
+            }
+
+            if (currentValue == null && !String.IsNullOrEmpty(expressionName))
+            {
+                // Ignore any select list (enumerable with this name) in the view data
+                currentValue = htmlHelper.ViewData.Eval(expressionName) as Enum;
+            }
+
+            if (currentValue == null)
+            {
+                currentValue = metadata.Model as Enum;
+            }
+
+            IList<SelectListItem> selectList = System.Web.Mvc.Html.EnumHelper.GetSelectList(metadata.ModelType, currentValue);
+            //if (!String.IsNullOrEmpty(optionLabel) && selectList.Count != 0 && String.IsNullOrEmpty(selectList[0].Text))
+            //{
+            //    // Were given an optionLabel and the select list has a blank initial slot.  Combine.
+            //    selectList[0].Text = optionLabel;
+
+            //    // Use the option label just once; don't pass it down the lower-level helpers.
+            //    optionLabel = null;
+            //}
+
+            //return DropDownListHelper(htmlHelper, metadata, expressionName, selectList, optionLabel, htmlAttributes);
+
+            return RadioButtonForSelectList(htmlHelper, expression, selectList, firstLabel, lastLabel);
+        }
+
         ///// <summary>
         ///// Based on: http://jonlanceley.blogspot.com/2011/06/mvc3-radiobuttonlist-helper.html
         ///// </summary>
