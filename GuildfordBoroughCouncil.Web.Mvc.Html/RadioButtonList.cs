@@ -159,7 +159,7 @@ namespace GuildfordBoroughCouncil.Web.Mvc.Html
             if (!System.Web.Mvc.Html.EnumHelper.IsValidForEnumHelper(metadata.ModelType))
             {
                 string formatString;
-                if (System.Web.Mvc.Html.EnumHelper.HasFlags(metadata.ModelType))
+                if (GuildfordBoroughCouncil.Web.Mvc.Html.EnumHelper.HasFlags(metadata.ModelType))
                 {
                     formatString = "Return type '{0}' is not supported. Type must not have a '{1}' attribute.";
                 }

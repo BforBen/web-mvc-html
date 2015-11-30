@@ -71,6 +71,7 @@
     <Compile Include="DescriptionExtensions.cs" />
     <Compile Include="DisplayExtensions.cs" />
     <Compile Include="EditorExtensions.cs" />
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="HelpExtensions.cs" />
     <Compile Include="LabelExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
