@@ -13,7 +13,6 @@ namespace GuildfordBoroughCouncil.Web.Mvc.Html
 {
     public static class RadioButtonExtensions
     {
-
         /// <summary>
         /// Source: http://jonlanceley.blogspot.com/2011/06/mvc3-radiobuttonlist-helper.html
         /// </summary>
@@ -104,7 +103,7 @@ namespace GuildfordBoroughCouncil.Web.Mvc.Html
             var metaData = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
             var sb = new StringBuilder();
 
-            sb.AppendLine(@"<ul class=""list-unstyled radiolist"">");
+            //sb.AppendLine(@"<ul class=""list-unstyled radiolist"">");
 
             if (!String.IsNullOrWhiteSpace(firstLabel))
             {
@@ -121,10 +120,32 @@ namespace GuildfordBoroughCouncil.Web.Mvc.Html
 
                     var id = string.Format("{0}_{1}", IdName, IdDescriminator);
 
-                    var label = htmlHelper.Label(id, HttpUtility.HtmlEncode(item.Text));
-                    var radio = htmlHelper.RadioButtonFor(expression, item.Value ?? HttpUtility.HtmlEncode(item.Text), new { Id = id }).ToHtmlString();
+                    var wrapper = new TagBuilder("div");
+                    wrapper.AddCssClass("radio");
 
-                    sb.AppendFormat("<li>{0}{1}</li>", radio, label);
+                    var label = new TagBuilder("label");
+                    label.Attributes["for"] = id;
+
+                    var radioAttributes = new Dictionary<string, object>();
+
+                    radioAttributes.Add("id", id);
+
+                    if (item.Selected)
+                    {
+                        radioAttributes.Add("selected", "selected");
+                    }
+
+                    if (item.Disabled)
+                    {
+                        radioAttributes.Add("disabled", "disabled");
+                        wrapper.AddCssClass("disabled");
+                    }
+
+                    label.InnerHtml = htmlHelper.RadioButtonFor(expression, item.Value ?? HttpUtility.HtmlEncode(item.Text), radioAttributes).ToHtmlString() + " " + HttpUtility.HtmlEncode(item.Text);
+
+                    wrapper.InnerHtml = label.ToString(TagRenderMode.Normal);
+
+                    sb.Append(wrapper.ToString(TagRenderMode.Normal));
                 }
             }
 
@@ -133,7 +154,7 @@ namespace GuildfordBoroughCouncil.Web.Mvc.Html
                 sb.AppendFormat(@"<li class=""radiolist-label radiolist-label-last"">{0}</li>", lastLabel);
             }
 
-            sb.AppendLine("</ul>");
+            //sb.AppendLine("</ul>");
 
             return MvcHtmlString.Create(sb.ToString());
         }
